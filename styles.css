@@ -92,6 +92,11 @@ main h1
     display: flex;
 }
 
+.flex.right
+{
+    justify-content: flex-end;
+}
+
 .grid
 {
     display: grid;
