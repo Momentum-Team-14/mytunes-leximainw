@@ -28,18 +28,69 @@ audio
     flex-wrap: wrap;
 }
 
+.result-outer
+{
+    margin: 0.5rem;
+    width: calc(20% - 1rem);
+}
+
 .result
 {
     background-color: #f0f0f0;
     border: 1px #bababa solid;
     text-align: center;
-    width: calc(20% - 2px - 2rem);
-    margin: 0.5rem;
     padding: 1rem 0.5rem;
     border-radius: 2rem;
+    transition-duration: 0.2s;
+}
+
+.result.selected
+{
+    transform: translateY(-0.5rem);
+    filter: drop-shadow(0 0.5rem 4px #00000080);
 }
 
 .result img
 {
     border-radius: 1rem;
+}
+
+@media(max-width: calc(60rem / 0.72))
+{
+    .result-outer
+    {
+        width: calc(25% - 1rem);
+    }
+}
+
+@media(max-width: calc(48rem / 0.72))
+{
+    .result-outer
+    {
+        width: calc(100% / 3 - 1rem);
+    }
+}
+
+@media(max-width: calc(36rem / 0.72))
+{
+    body
+    {
+        width: 100%;
+    }
+}
+
+@media(max-width: calc(36rem / 0.9))
+{
+    .result-outer
+    {
+        width: calc(50% - 1rem);
+    }
+}
+
+@media(max-width: calc(24rem / 0.9))
+{
+    .result-outer
+    {
+        width: 100%;
+    }
 }

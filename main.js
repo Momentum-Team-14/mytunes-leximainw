@@ -38,6 +38,8 @@ function displayResults(search)
     const results = search.response.results
         .filter(x => x.wrapperType === 'track' && x.kind === 'song')
     results.slice(0, 50).forEach(result => {
+        const outer = document.createElement('div')
+        outer.classList.add('result-outer')
         const elem = document.createElement('div')
         elem.classList.add('result')
         let child = document.createElement('img')
@@ -53,9 +55,16 @@ function displayResults(search)
         child.appendChild(span)
         elem.appendChild(child)
         elem.addEventListener('click', e => {
+            const curr = document.querySelector('.result.selected')
+            if (curr)
+            {
+                curr.classList.remove('selected')
+            }
+            elem.classList.add('selected')
             playSong(result)
         })
-        resultsElem.appendChild(elem)
+        outer.appendChild(elem)
+        resultsElem.appendChild(outer)
     })
     console.log(results[0])
 }
