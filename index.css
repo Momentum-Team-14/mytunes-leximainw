@@ -1,0 +1,16 @@
+#search
+{
+    display: flex;
+    align-items: center;
+}
+
+#search button
+{
+    all: unset;
+    margin-left: 0.5rem;
+}
+
+#search button img
+{
+    height: 1rem;
+}

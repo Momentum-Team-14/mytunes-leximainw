@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="index.css">
   <script src="main.js" defer></script>
   <title>BnL Music Search</title>
 </head>
@@ -13,8 +14,33 @@
       <h1><img src="BnL_logo.svg" alt="Buy n Large logo"> Buy n Large Music</h1>
     </div>
   </header>
+  <div id="login-modal">
+      <div class="spacer">
+          <div class="flex">
+              <form class="border">
+                  <div class="grid">
+                      <div>Username:</div>
+                      <div><input class="user" type="text" value="admin"></div>
+                      <div>Password:</div>
+                      <div><input class="pass" type="password" value="admin"></div>
+                      <div></div>
+                      <div><button>Sign In</button></div>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
   <main>
-    <div class="spacer"></div>
+    <div class="spacer">
+      <form id="search" action="/search">
+        <input type="text">
+        <button><img src="magnifying-glass.svg" alt=""></button>
+      </form>
+      <audio src="" controls></audio>
+      <div id="results">
+
+      </div>
+    </div>
   </main>
 </body>
 </html>
