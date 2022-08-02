@@ -42,9 +42,6 @@ function displayResults(search)
         elem.classList.add('result')
         let child = document.createElement('img')
         child.src = result.artworkUrl100
-        child.addEventListener('click', e => {
-            playSong(result)
-        })
         elem.appendChild(child)
         child = document.createElement('div')
         child.innerText = result.trackName
@@ -55,6 +52,9 @@ function displayResults(search)
         span.innerText = result.artistName
         child.appendChild(span)
         elem.appendChild(child)
+        elem.addEventListener('click', e => {
+            playSong(result)
+        })
         resultsElem.appendChild(elem)
     })
     console.log(results[0])

@@ -30,8 +30,13 @@ audio
 
 .result
 {
+    background-color: #f0f0f0;
+    border: 1px #bababa solid;
     text-align: center;
-    width: 20%;
+    width: calc(20% - 2px - 2rem);
+    margin: 0.5rem;
+    padding: 1rem 0.5rem;
+    border-radius: 2rem;
 }
 
 .result img
