@@ -129,3 +129,18 @@ function sendSearch(url, callback)
     searchCache.push(search)
     return search
 }
+
+{
+    const userMode = localStorage.getItem('user-style')
+    if (userMode)
+    {
+        document.querySelector('#user-style').value = userMode
+        document.querySelector('#user-style-link').href = `${userMode}.css`
+    }
+    document.querySelector('#user-style').addEventListener('change', e => {
+        e.preventDefault()
+        const style = e.target.value
+        document.querySelector('#user-style-link').href = `${style}.css`
+        localStorage.setItem('user-style', style)
+    })
+}

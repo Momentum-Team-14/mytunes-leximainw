@@ -37,8 +37,8 @@ audio
 
 .result
 {
-    background-color: #f0f0f0;
-    border: 1px #bababa solid;
+    background-color: var(--color2);
+    border: 1px var(--color3) solid;
     width: 100%;
     text-align: center;
     padding: 1rem 0.5rem;
@@ -48,7 +48,7 @@ audio
 
 .result.selected
 {
-    background-color: #f0fff0;
+    background-color: var(--color-elem-green);
     transform: translateY(-0.5rem);
     filter: drop-shadow(0 0.5rem 4px #00000080);
 }

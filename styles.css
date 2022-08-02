@@ -2,15 +2,15 @@ body
 {
     margin: auto;
     width: 80%;
-    background-color: #f0f0f0;
-    color: #303030;
+    background-color: var(--color0);
+    color: var(--color4);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 header
 {
     background-color: #083d77;
-    border-bottom: 3px solid #90ddf0;
+    border-bottom: 3px solid var(--color-header-blue);
     padding: 2em 0;
 }
 
@@ -78,7 +78,7 @@ h1
 
 main
 {
-    background-color: #fff;
+    background-color: var(--color1);
     padding: 1rem 0;
 }
 
@@ -102,6 +102,11 @@ main h1
 .flex.right
 {
     justify-content: flex-end;
+}
+
+.flex.between
+{
+    justify-content: space-between;
 }
 
 .grid

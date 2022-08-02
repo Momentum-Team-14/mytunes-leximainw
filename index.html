@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="index.css">
+  <link id="user-style-link" rel="stylesheet" href="dark-theme.css">
   <script src="main.js" defer></script>
   <title>BnL Music Search</title>
 </head>
@@ -32,7 +33,14 @@
   </div>
   <main>
     <div class="spacer">
-      <div class="flex right">
+      <div class="flex between">
+        <form id="user-style-form">
+          <label for="user-style">Style:</label>
+          <select name="style" id="user-style">
+            <option value="dark-theme">Dark Mode</option>
+            <option value="light-theme">Light Mode</option>
+          </select>
+        </form>
         <form id="search" action="/search">
           <input type="text">
           <button><img src="magnifying-glass.svg" alt=""></button>
