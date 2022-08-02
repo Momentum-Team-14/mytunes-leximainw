@@ -53,8 +53,8 @@ function displayResults(search)
 function playSong(result)
 {
     const audio = document.querySelector('#audio-preview')
-    audio.url = result.previewUrl
-    audio.parentElement.play()
+    audio.src = result.previewUrl
+    audio.play()
 }
 
 function sendSearch(url, callback)
