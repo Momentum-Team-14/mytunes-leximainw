@@ -12,7 +12,7 @@ document.querySelector('#search').addEventListener('submit', e => {
     {
         return
     }
-    const url = `${apiUrl}search?term=${term}&limit=100`
+    const url = `${apiUrl}search?term=${term}&media=music`
     sendSearch(url, displayResults)
 })
 
@@ -32,6 +32,9 @@ function displayResults(search)
         elem.classList.add('result')
         let child = document.createElement('img')
         child.src = result.artworkUrl100
+        child.addEventListener('click', e => {
+            playSong(result)
+        })
         elem.appendChild(child)
         child = document.createElement('div')
         child.innerText = result.trackName
@@ -45,6 +48,13 @@ function displayResults(search)
         resultsElem.appendChild(elem)
     })
     console.log(results[0])
+}
+
+function playSong(result)
+{
+    const audio = document.querySelector('#audio-preview')
+    audio.url = result.previewUrl
+    audio.parentElement.play()
 }
 
 function sendSearch(url, callback)
