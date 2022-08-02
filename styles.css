@@ -89,7 +89,7 @@ main h1
 
 .error
 {
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     background-color: #ffbaba;
     border-radius: 1rem;
 }

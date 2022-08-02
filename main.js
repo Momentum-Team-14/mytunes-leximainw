@@ -14,7 +14,7 @@ document.querySelector('#search').addEventListener('submit', e => {
         return
     }
     const url = `${apiUrl}search?term=${encodeURIComponent(term)}&media=music`
-    sendSearch(url, displayResults)
+    sendSearch(url, displayResults).term = term
 })
 
 function displayResults(search)
@@ -37,36 +37,49 @@ function displayResults(search)
     resultsElem.innerHTML = ''
     const results = search.response.results
         .filter(x => x.wrapperType === 'track' && x.kind === 'song')
-    results.slice(0, 50).forEach(result => {
-        const outer = document.createElement('div')
-        outer.classList.add('result-outer')
-        const elem = document.createElement('div')
-        elem.classList.add('result')
-        let child = document.createElement('img')
-        child.src = result.artworkUrl100
-        elem.appendChild(child)
-        child = document.createElement('div')
-        child.innerText = result.trackName
-        elem.appendChild(child)
-        child = document.createElement('div')
-        child.appendChild(document.createTextNode('by '))
-        let span = document.createElement('span')
-        span.innerText = result.artistName
-        child.appendChild(span)
-        elem.appendChild(child)
-        elem.addEventListener('click', e => {
-            const curr = document.querySelector('.result.selected')
-            if (curr)
-            {
-                curr.classList.remove('selected')
-            }
-            elem.classList.add('selected')
-            playSong(result)
+    if (!results.length)
+    {
+        let errBanner
+        if (!(errBanner = document.querySelector('#results .error')))
+        {
+            errBanner = document.createElement('div')
+            errBanner.classList.add('error')
+            resultsElem.prepend(errBanner)
+        }
+        errBanner.innerText = `Zero results found for "${search.term}".`
+    }
+    else
+    {
+        results.slice(0, 50).forEach(result => {
+            const outer = document.createElement('div')
+            outer.classList.add('result-outer')
+            const elem = document.createElement('div')
+            elem.classList.add('result')
+            let child = document.createElement('img')
+            child.src = result.artworkUrl100
+            elem.appendChild(child)
+            child = document.createElement('div')
+            child.innerText = result.trackName
+            elem.appendChild(child)
+            child = document.createElement('div')
+            child.appendChild(document.createTextNode('by '))
+            let span = document.createElement('span')
+            span.innerText = result.artistName
+            child.appendChild(span)
+            elem.appendChild(child)
+            elem.addEventListener('click', e => {
+                const curr = document.querySelector('.result.selected')
+                if (curr)
+                {
+                    curr.classList.remove('selected')
+                }
+                elem.classList.add('selected')
+                playSong(result)
+            })
+            outer.appendChild(elem)
+            resultsElem.appendChild(outer)
         })
-        outer.appendChild(elem)
-        resultsElem.appendChild(outer)
-    })
-    console.log(results[0])
+    }
 }
 
 function playSong(result)
@@ -114,4 +127,5 @@ function sendSearch(url, callback)
             search.callback(search)
         })
     searchCache.push(search)
+    return search
 }
