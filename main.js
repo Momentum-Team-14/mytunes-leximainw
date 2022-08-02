@@ -1,5 +1,5 @@
 const useProxy = false
-const apiUrl = useProxy ? 'https://itunes.apple.com/' : 'https://proxy-itunes-api.glitch.me/'
+const apiUrl = !useProxy ? 'https://itunes.apple.com/' : 'https://proxy-itunes-api.glitch.me/'
 
 let searchCache = []
 const searchWaitTimeout = 30 * 1000
