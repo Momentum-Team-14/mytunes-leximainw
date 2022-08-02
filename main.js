@@ -7,7 +7,12 @@ const searchFoundTimeout = 15 * 60 * 1000
 
 document.querySelector('#search').addEventListener('submit', e => {
     e.preventDefault()
-    const url = `${apiUrl}search?term=${document.querySelector('#search input').value}`
+    const term = document.querySelector('#search input').value
+    if (term === '')
+    {
+        return
+    }
+    const url = `${apiUrl}search?term=${term}`
     sendSearch(url, console.log)
 })
 
