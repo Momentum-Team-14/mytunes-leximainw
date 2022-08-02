@@ -73,6 +73,8 @@ function sendSearch(url, callback)
     searchCache = searchCache.filter(x => x.expires > now)
     if (searchCache.some(x => x.url === url))
     {
+        const search = searchCache.find(x => x.url === url)
+        search.callback(search)
         return
     }
     const search = {
