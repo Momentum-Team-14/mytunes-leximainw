@@ -12,9 +12,33 @@ document.querySelector('#search').addEventListener('submit', e => {
     {
         return
     }
-    const url = `${apiUrl}search?term=${term}`
-    sendSearch(url, console.log)
+    const url = `${apiUrl}search?term=${term}&limit=100`
+    sendSearch(url, displayResults)
 })
+
+function displayResults(search)
+{
+    if (!search.fulfilled)
+    {
+        // TODO: inform user that search failed
+        return
+    }
+    const resultsElem = document.querySelector('#results')
+    resultsElem.innerHTML = ''
+    const results = search.response.results
+        .filter(x => x.wrapperType === 'track' && x.kind === 'song')
+    results.slice(0, 50).forEach(result => {
+        const elem = document.createElement('div')
+        let child = document.createElement('div')
+        child.innerText = result.artistName
+        elem.appendChild(child)
+        child = document.createElement('img')
+        child.src = result.artworkUrl100
+        elem.appendChild(child)
+        resultsElem.appendChild(elem)
+    })
+    console.log(results[0])
+}
 
 function sendSearch(url, callback)
 {
