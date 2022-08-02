@@ -2,6 +2,7 @@ const useProxy = false
 const apiUrl = !useProxy ? 'https://itunes.apple.com/' : 'https://proxy-itunes-api.glitch.me/'
 
 let searchCache = []
+const searchReqTimeout = 5 * 1000
 const searchWaitTimeout = 30 * 1000
 const searchFoundTimeout = 15 * 60 * 1000
 
@@ -18,12 +19,21 @@ document.querySelector('#search').addEventListener('submit', e => {
 
 function displayResults(search)
 {
+    const resultsElem = document.querySelector('#results')
     if (!search.fulfilled)
     {
+        console.log(search)
+        let errBanner
+        if (!(errBanner = document.querySelector('#results .error')))
+        {
+            errBanner = document.createElement('div')
+            errBanner.classList.add('error')
+            resultsElem.prepend(errBanner)
+        }
+        errBanner.innerText = "Couldn't get search results - try again later!"
         // TODO: inform user that search failed
         return
     }
-    const resultsElem = document.querySelector('#results')
     resultsElem.innerHTML = ''
     const results = search.response.results
         .filter(x => x.wrapperType === 'track' && x.kind === 'song')
@@ -70,10 +80,14 @@ function sendSearch(url, callback)
         callback,
         expires: now + searchWaitTimeout
     }
-    fetch(url)
-        .then(res => {
+    const controller = new AbortController()
+    const timeoutID = setTimeout(() => controller.abort(), searchReqTimeout)
+    fetch(url, {
+        signal: controller.signal
+    }).then(res => {
             search.ok = res.ok
             search.status = res.status
+            clearTimeout(timeoutID)
             return res.json()
         })
         .then(data => {
