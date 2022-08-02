@@ -13,7 +13,7 @@ document.querySelector('#search').addEventListener('submit', e => {
     {
         return
     }
-    const url = `${apiUrl}search?term=${term}&media=music`
+    const url = `${apiUrl}search?term=${encodeURIComponent(term)}&media=music`
     sendSearch(url, displayResults)
 })
 
