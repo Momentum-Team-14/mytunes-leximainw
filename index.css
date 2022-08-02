@@ -18,4 +18,22 @@
 audio
 {
     width: 100%;
+    margin: 2rem 0;
+}
+
+#results
+{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.result
+{
+    text-align: center;
+    width: 20%;
+}
+
+.result img
+{
+    border-radius: 1rem;
 }

@@ -29,11 +29,18 @@ function displayResults(search)
         .filter(x => x.wrapperType === 'track' && x.kind === 'song')
     results.slice(0, 50).forEach(result => {
         const elem = document.createElement('div')
-        let child = document.createElement('div')
-        child.innerText = result.artistName
-        elem.appendChild(child)
-        child = document.createElement('img')
+        elem.classList.add('result')
+        let child = document.createElement('img')
         child.src = result.artworkUrl100
+        elem.appendChild(child)
+        child = document.createElement('div')
+        child.innerText = result.trackName
+        elem.appendChild(child)
+        child = document.createElement('div')
+        child.appendChild(document.createTextNode('by '))
+        let span = document.createElement('span')
+        span.innerText = result.artistName
+        child.appendChild(span)
         elem.appendChild(child)
         resultsElem.appendChild(elem)
     })
