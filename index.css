@@ -39,6 +39,12 @@ audio
     flex-wrap: wrap;
 }
 
+#results>.error
+{
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
 .result-outer
 {
     display: flex;
