@@ -47,7 +47,7 @@ elemSearch.addEventListener('submit', e => {
     }
     const type = document.querySelector('#search select').value
     let url = `${apiUrl}search?term=${encodeURIComponent(term)}&media=music&entity=song`
-    if (type.length)
+    if (type !== '')
     {
         url += `&attribute=${type}`
     }
@@ -73,6 +73,7 @@ function displayResults(search)
             elemCards.prepend(errBanner)
         }
         errBanner.innerText = "Couldn't get search results - try again later!"
+        console.error(search.error)
         return
     }
     elemCards.innerHTML = ''
@@ -99,7 +100,7 @@ function displayResults(search)
             errBanner.classList.add('error')
             elemCards.prepend(errBanner)
         }
-        errBanner.innerText = `Zero results found for "${search.term}".`
+        errBanner.innerText = `No results found for "${search.term}".`
     }
     else
     {
@@ -110,58 +111,39 @@ function displayResults(search)
                 elemCards.removeCard = null
                 return
             }
+
             const releaseDate = new Date(result.releaseDate)
-            const outer = document.createElement('div')
-            outer.classList.add('result-outer')
-            const elem = document.createElement('div')
-            elem.classList.add('result')
+            const outer = elemCards.appendNew('div.result-outer')
+            const elem = outer.appendNew('div.result')
 
-            let child = document.createElement('img')
-            child.src = result.artworkUrl100
-            elem.append(child)
+            // artwork image
+            elem.appendNew('img').src = result.artworkUrl100
 
-            child = document.createElement('div')
-            child.classList.add('play-bar')
-            let innerDiv = document.createElement('div')
-            innerDiv.classList.add('bar')
-            innerDiv.addEventListener('click', e => seekCard(e, innerDiv))
-            let progress = document.createElement('div')
-            progress.classList.add('progress')
-            innerDiv.append(progress)
-            child.append(innerDiv)
-            elem.append(child)
+            // play bar
+            elem.appendNew('div.play-bar')
+                .appendNew('div.bar')
+                .appendNew('div.progress')
 
-            child = document.createElement('div')
-            child.innerText = result.trackName
-            elem.append(child)
+            // track name
+            elem.appendNew('div').innerText = result.trackName
 
-            child = document.createElement('div')
-            let span = document.createElement('span')
-            span.innerText = result.collectionName
-            child.append(span)
+            // album name & release year
+            let child = elem.appendNew('div')
+            child.appendNew('span').innerText = result.collectionName
             child.append(' ')
-            span = document.createElement('span')
-            span.innerText = `(${releaseDate.getUTCFullYear()})`
-            span.classList.add('text-sm')
-            child.append(span)
-            elem.append(child)
+            child.appendNew('span.text-sm').innerText
+                = `(${releaseDate.getUTCFullYear()})`
 
-            child = document.createElement('div')
-            span = document.createElement('span')
-            span.innerText = 'by'
-            span.classList.add('text-sm')
-            child.append(span)
+            // artist name
+            child = elem.appendNew('div')
+            child.appendNew('span.text-sm').innerText = 'by'
             child.append(' ')
-            span = document.createElement('span')
-            span.innerText = result.artistName
-            child.append(span)
-            elem.append(child)
+            child.appendNew('span').innerText = result.artistName
 
+            // card data and click event
             elem.songUrl = result.previewUrl
             elem.trackId = result.trackId
             elem.addEventListener('click', () => playCard(elem))
-            outer.append(elem)
-            elemCards.append(outer)
         })
     }
 }
@@ -301,4 +283,72 @@ function sendSearch(url, callback)
         document.querySelector('#user-style-link').href = `${style}.css`
         localStorage.setItem('user-style', style)
     })
+}
+
+HTMLElement.prototype.appendNew = function(src)
+{
+    let elem
+    let index = choice(src.indexOf(' '), src.length)
+    let data = src.substring(0, index)
+    let props = src.substring(index + 1)
+    let classIndex = data.indexOf('.')
+    let idIndex = data.indexOf('#')
+    let hasId = false
+    console.log(src)
+    if (classIndex !== -1 || idIndex !== -1)
+    {
+        index = min(classIndex, idIndex)
+        elem = document.createElement(data.substring(0, index))
+        data = data.substring(index)
+        while (classIndex !== -1 || idIndex !== -1)
+        {
+            const isId = data[0] === '#'
+            if (isId)
+            {
+                if (hasId)
+                {
+                    console.error(`adding multiple IDs to new element (from ${src})`)
+                }
+                hasId = true
+            }
+            classIndex = data.indexOf('.', 1)
+            idIndex = data.indexOf('#', 1)
+
+            index = choice(min(classIndex, idIndex), data.length)
+            const curr = data.substring(1, index)
+            data = data.substring(index)
+            if (curr === '')
+            {
+                console.error(`can't add empty ${isId ? 'id' : 'class'} (from ${src})`)
+                continue
+            }
+            if (isId)
+            {
+                elem.setAttribute('id', curr)
+            }
+            else
+            {
+                elem.classList.add(curr)
+            }
+        }
+    }
+    else
+    {
+        elem = document.createElement(data)
+    }
+
+    // TODO: interpret properties
+
+    this.appendChild(elem)
+    return elem
+
+    function choice(index, value)
+    {
+        return index !== -1 ? index : value
+    }
+
+    function min(left, right)
+    {
+        return left === -1 ? right : right === -1 ? left : left < right ? left : right
+    }
 }
