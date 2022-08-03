@@ -120,15 +120,16 @@ function displayResults(search)
             elem.appendNew('img').src = result.artworkUrl100
 
             // play bar
-            elem.appendNew('div.play-bar')
+            let child = elem.appendNew('div.play-bar')
                 .appendNew('div.bar')
-                .appendNew('div.progress')
+            child.addEventListener('click', e => seekCard(e, child))
+            child.appendNew('div.progress')
 
             // track name
             elem.appendNew('div').innerText = result.trackName
 
             // album name & release year
-            let child = elem.appendNew('div')
+            child = elem.appendNew('div')
             child.appendNew('span').innerText = result.collectionName
             child.append(' ')
             child.appendNew('span.text-sm').innerText
