@@ -113,7 +113,7 @@ function displayResults(search)
 
 function playCard(card)
 {
-    if (elemCards.removeCard)
+    if (elemCards.removeCard && card != elemCards.removeCard)
     {
         elemCards.removeChild(elemCards.removeCard)
         elemCards.removeCard = null
