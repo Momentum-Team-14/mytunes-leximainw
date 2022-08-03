@@ -113,38 +113,50 @@ function displayResults(search)
             }
 
             const releaseDate = new Date(result.releaseDate)
-            const outer = elemCards.appendNew('div.result-outer')
-            const elem = outer.appendNew('div.result')
+            elemCards.appendNew([
 
-            // artwork image
-            elem.appendNew('img').src = result.artworkUrl100
+                // outer container to keep all cards on a line the same height
+                ['div.result-outer', outer => outer.appendNew([
 
-            // play bar
-            let child = elem.appendNew('div.play-bar')
-                .appendNew('div.bar')
-            child.addEventListener('click', e => seekCard(e, child))
-            child.appendNew('div.progress')
+                    // song card (holds album thumbnail and info about the song)
+                    ['div.result', card => {
+                        card.appendNew([
 
-            // track name
-            elem.appendNew('div').innerText = result.trackName
+                            // album thumbnail
+                            ['img', x => x.src = result.artworkUrl100],
 
-            // album name & release year
-            child = elem.appendNew('div')
-            child.appendNew('span').innerText = result.collectionName
-            child.append(' ')
-            child.appendNew('span.text-sm').innerText
-                = `(${releaseDate.getUTCFullYear()})`
+                            // inner playbar for each card
+                            ['div.play-bar', x => x.appendNew([
+                                ['div.bar', x => {
+                                    x.addEventListener('click', e => seekCard(e, x))
+                                    x.appendNew('div.progress')
+                                }]
+                            ])],
 
-            // artist name
-            child = elem.appendNew('div')
-            child.appendNew('span.text-sm').innerText = 'by'
-            child.append(' ')
-            child.appendNew('span').innerText = result.artistName
+                            // song name
+                            ['div', x => x.innerText = result.trackName],
 
-            // card data and click event
-            elem.songUrl = result.previewUrl
-            elem.trackId = result.trackId
-            elem.addEventListener('click', () => playCard(elem))
+                            // album name and release year
+                            ['div', x => x.appendNew([
+                                ['span', x => x.innerText = result.collectionName],
+                                '$ ',
+                                ['span.text-sm', x => x.innerText
+                                    = `(${releaseDate.getUTCFullYear()})`]
+                            ])],
+
+                            // artist name
+                            ['div', x => x.appendNew([
+                                ['span.text-sm', x => x.innerText = 'by'],
+                                '$ ',
+                                ['span', x => x.innerText = result.artistName]
+                            ])]
+                        ])
+                        card.songUrl = result.previewUrl
+                        card.trackId = result.trackId
+                        card.addEventListener('click', () => playCard(card))
+                    }]
+                ])]
+            ])
         })
     }
 }
@@ -288,11 +300,11 @@ function sendSearch(url, callback)
 
 HTMLElement.prototype.appendNew = function(src)
 {
-    if (typeof(src) === 'array')
+    if (typeof(src) === 'object')
     {
         for (let subsrc of src)
         {
-            if (typeof(subsrc) === 'array')
+            if (typeof(subsrc) === 'object')
             {
                 const elem = this.appendNew(subsrc[0])
                 if (subsrc[1])
@@ -302,12 +314,18 @@ HTMLElement.prototype.appendNew = function(src)
             }
             else
             {
-                this.appendNew(src)
+                this.appendNew(subsrc)
             }
         }
     }
     else
     {
+        if (src.startsWith('$'))
+        {
+            this.append(src.substring(1))
+            return null
+        }
+
         let elem
         let index = choice(src.indexOf(' '), src.length)
         let data = src.substring(0, index)
