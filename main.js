@@ -79,6 +79,7 @@ function displayResults(search)
     }
     else
     {
+        console.log(results[0])
         results.slice(0, 50).forEach(result => {
             if (currCard && currCard.trackId === result.trackId)
             {
@@ -94,8 +95,11 @@ function displayResults(search)
             child.src = result.artworkUrl100
             elem.append(child)
             child = document.createElement('div')
+            child.innerText = result.trackName
+            elem.append(child)
+            child = document.createElement('div')
             let span = document.createElement('span')
-            span.innerText = result.trackName
+            span.innerText = result.collectionName
             child.append(span)
             child.append(' ')
             span = document.createElement('span')

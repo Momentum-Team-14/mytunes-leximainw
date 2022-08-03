@@ -63,6 +63,16 @@ audio
     border-radius: 1rem;
 }
 
+.result div
+{
+    margin-bottom: 0.35rem;
+}
+
+.result div:last-child
+{
+    margin-bottom: 0;
+}
+
 @media(max-width: calc(60rem / 0.72))
 {
     .result-outer
