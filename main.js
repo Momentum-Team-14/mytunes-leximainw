@@ -6,7 +6,11 @@ const searchReqTimeout = 5 * 1000
 const searchWaitTimeout = 30 * 1000
 const searchFoundTimeout = 15 * 60 * 1000
 
-document.querySelector('#search').addEventListener('submit', e => {
+const elemAudio = document.querySelector('#audio-preview')
+const elemCards = document.querySelector('#results')
+const elemSearch = document.querySelector('#search')
+
+elemSearch.addEventListener('submit', e => {
     e.preventDefault()
     const input = document.querySelector('#search input')
     const term = input.value
@@ -15,12 +19,16 @@ document.querySelector('#search').addEventListener('submit', e => {
         return
     }
     const url = `${apiUrl}search?term=${encodeURIComponent(term)}&media=music`
-    sendSearch(url, displayResults).term = term
+    const search = sendSearch(url, displayResults)
+    if (search)
+    {
+        search.term = term
+    }
     document.activeElement.blur()
     document.body.focus()
 })
 
-document.querySelector('#audio-preview').addEventListener('ended', e => {
+elemAudio.addEventListener('ended', e => {
     const card = document.querySelector('.result.selected')
     if (card)
     {
@@ -30,24 +38,37 @@ document.querySelector('#audio-preview').addEventListener('ended', e => {
 
 function displayResults(search)
 {
-    const resultsElem = document.querySelector('#results')
+    const currCard = document.querySelector('.result.selected')
     if (!search.fulfilled)
     {
-        console.log(search)
         let errBanner
         if (!(errBanner = document.querySelector('#results .error')))
         {
             errBanner = document.createElement('div')
             errBanner.classList.add('error')
-            resultsElem.prepend(errBanner)
+            elemCards.prepend(errBanner)
         }
         errBanner.innerText = "Couldn't get search results - try again later!"
         // TODO: inform user that search failed
         return
     }
-    resultsElem.innerHTML = ''
-    const results = search.response.results
+    elemCards.innerHTML = ''
+    let results = search.response.results
         .filter(x => x.wrapperType === 'track' && x.kind === 'song')
+    if (currCard)
+    {
+        console.log(currCard)
+        elemCards.appendChild(currCard.parentElement)
+        if (results.some(x => x.trackId === currCard.trackId))
+        {
+            results = results.filter(x => x.trackId !== currCard.trackId)
+            elemCards.removeCard = null
+        }
+        else
+        {
+            elemCards.removeCard = currCard.parentElement
+        }
+    }
     if (!results.length)
     {
         let errBanner
@@ -55,7 +76,7 @@ function displayResults(search)
         {
             errBanner = document.createElement('div')
             errBanner.classList.add('error')
-            resultsElem.prepend(errBanner)
+            elemCards.prepend(errBanner)
         }
         errBanner.innerText = `Zero results found for "${search.term}".`
     }
@@ -79,17 +100,22 @@ function displayResults(search)
             child.appendChild(span)
             elem.appendChild(child)
             elem.songUrl = result.previewUrl
+            elem.trackId = result.trackId
             elem.addEventListener('click', () => playCard(elem))
             outer.appendChild(elem)
-            resultsElem.appendChild(outer)
+            elemCards.appendChild(outer)
         })
     }
 }
 
 function playCard(card)
 {
+    if (elemCards.removeCard)
+    {
+        elemCards.removeChild(elemCards.removeCard)
+        elemCards.removeCard = null
+    }
     const curr = document.querySelector('.result.selected')
-    const audio = document.querySelector("#audio-preview")
     if (curr)
     {
         if (curr === card)
@@ -98,12 +124,12 @@ function playCard(card)
             if (paused)
             {
                 curr.classList.remove('paused')
-                audio.play()
+                elemAudio.play()
             }
             else
             {
                 curr.classList.add('paused')
-                audio.pause()
+                elemAudio.pause()
             }
             return
         }
@@ -113,9 +139,9 @@ function playCard(card)
             curr.classList.remove('paused')
         }
     }
-    audio.src = card.songUrl
+    elemAudio.src = card.songUrl
     card.classList.add('selected')
-    audio.play()
+    elemAudio.play()
 }
 
 function sendSearch(url, callback)
