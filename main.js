@@ -124,6 +124,7 @@ function displayResults(search)
             child.classList.add('play-bar')
             let innerDiv = document.createElement('div')
             innerDiv.classList.add('bar')
+            innerDiv.addEventListener('click', e => seekCard(e, innerDiv))
             let progress = document.createElement('div')
             progress.classList.add('progress')
             innerDiv.append(progress)
@@ -237,6 +238,13 @@ function progressUpdate(playing)
 function progressLoop(bar)
 {
     bar.style.width = `${elemAudio.currentTime / elemAudio.duration * 100}%`
+}
+
+function seekCard(e, bar)
+{
+    e.stopPropagation()
+    elemAudio.currentTime = e.offsetX / bar.clientWidth * elemAudio.duration
+    progressLoop(bar.children[0])
 }
 
 function sendSearch(url, callback)
