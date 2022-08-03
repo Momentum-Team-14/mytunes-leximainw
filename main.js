@@ -84,6 +84,7 @@ function displayResults(search)
             if (currCard && currCard.trackId === result.trackId)
             {
                 elemCards.append(currCard.parentElement)
+                elemCards.removeCard = null
                 return
             }
             const releaseDate = new Date(result.releaseDate)
