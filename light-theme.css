@@ -1,0 +1,23 @@
+:root
+{
+    --color0: #f0f0f0;
+    --color1: #ffffff;
+    --color2: #f0f0f0;
+    --color3: #bababa;
+    --color4: #303030;
+    --color-elem-green: #e0ffe0;
+    --color-header-blue: #90ddf0;
+    --color-play-bar: #bababa;
+    --color-text-sm: #8b8b8b;
+}
+
+body
+{
+    background-color: #f0f0f0;
+    color: #303030;
+}
+
+main
+{
+    background-color: #fff;
+}

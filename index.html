@@ -3,9 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="index.css">
+  <link id="user-style-link" rel="stylesheet" href="dark-theme.css">
   <script src="main.js" defer></script>
-  <title>Music Search</title>
+  <title>BnL Music Search</title>
 </head>
 <body>
+  <header>
+    <div class="spacer">
+      <h1><img src="BnL_logo.svg" alt="Buy n Large logo"> Buy n Large Music</h1>
+    </div>
+  </header>
+  <div id="login-modal">
+    <div class="spacer">
+      <div class="flex">
+        <form class="border">
+          <div class="grid">
+            <div>Username:</div>
+            <div><input class="user" type="text" value="admin"></div>
+            <div>Password:</div>
+            <div><input class="pass" type="password" value="admin"></div>
+            <div></div>
+            <div><button>Sign In</button></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <main>
+    <div class="spacer">
+      <div id="search-header-flex" class="flex between">
+        <div class="search-inner-flex">
+          <form id="user-style-form">
+            <label for="user-style">Style:</label>
+            <select name="style" id="user-style">
+              <option value="dark-theme">Dark Mode</option>
+              <option value="light-theme">Light Mode</option>
+            </select>
+          </form>
+        </div>
+        <div class="search-inner-flex">
+          <form id="search" action="/search">
+            <button><img src="magnifying-glass.svg" alt=""></button>
+            <input type="text">
+            <select>
+              <option value="">All Results</option>
+              <option value="songTerm">Title</option>
+              <option value="albumTerm">Album</option>
+              <option value="artistTerm">Artist</option>
+            </select>
+          </form>
+        </div>
+      </div>
+      <audio id="audio-preview" controls></audio>
+      <div id="results"></div>
+    </div>
+  </main>
 </body>
 </html>

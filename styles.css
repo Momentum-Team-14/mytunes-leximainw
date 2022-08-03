@@ -1,0 +1,123 @@
+body
+{
+    margin: auto;
+    width: 80%;
+    background-color: var(--color0);
+    color: var(--color4);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header
+{
+    background-color: #083d77;
+    border-bottom: 3px solid var(--color-header-blue);
+    padding: 2rem 0;
+}
+
+header h1
+{
+    display: flex;
+    align-items: center;
+    color: #f0f0f0;
+}
+
+header h1 img
+{
+    margin-right: 1rem;
+    height: 4rem;
+}
+
+header nav
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    color: #f0f0f0;
+}
+
+header nav a
+{
+    color: #afaff8;
+}
+
+#login-modal .spacer
+{
+    position: relative;
+}
+
+#login-modal .flex
+{
+    position: absolute;
+    overflow: hidden;
+    right: 0%;
+}
+
+#login-modal .border
+{
+    display: none;
+    background-color: #baffba;
+    border-radius: 0 0 1rem 1rem;
+    padding: 0.5rem;
+}
+
+#login-modal .grid
+{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+h1
+{
+    margin: 0;
+}
+
+.spacer
+{
+    margin: auto;
+    width: 90%;
+}
+
+main
+{
+    background-color: var(--color1);
+    padding: 1rem 0;
+    min-height: calc(100vh - (10rem + 3px));
+}
+
+main h1
+{
+    padding: 0 0 1rem;
+}
+
+.text-sm
+{
+    font-size: 0.8em;
+    color: var(--color-text-sm)
+}
+
+.error
+{
+    padding: 0.5rem 1rem;
+    background-color: #ffbaba;
+    color: #303030;
+    border-radius: 1rem;
+}
+
+.flex
+{
+    display: flex;
+}
+
+.flex.right
+{
+    justify-content: flex-end;
+}
+
+.flex.between
+{
+    justify-content: space-between;
+}
+
+.grid
+{
+    display: grid;
+}
