@@ -32,13 +32,17 @@ elemAudio.addEventListener('pause', e => {
 
 elemSearch.addEventListener('submit', e => {
     e.preventDefault()
-    const input = document.querySelector('#search input')
-    const term = input.value
+    const term = document.querySelector('#search input').value
     if (term === '')
     {
         return
     }
-    const url = `${apiUrl}search?term=${encodeURIComponent(term)}&media=music`
+    const type = document.querySelector('#search select').value
+    let url = `${apiUrl}search?term=${encodeURIComponent(term)}&media=music&entity=song&attribute=songTerm`
+    if (type.length)
+    {
+        url += `&attribute=${type}`
+    }
     const search = sendSearch(url, displayResults)
     if (search)
     {

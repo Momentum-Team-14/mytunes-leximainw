@@ -7,7 +7,18 @@
 #search button
 {
     all: unset;
+}
+
+#search>*:not(body)
+{
+    /* :not(body) - CSS specificity hack to override 'all: unset' above
+    '#search button' is more specific than '#search>*' */
     margin-right: 0.5rem;
+}
+
+#search>*:last-child
+{
+    margin-right: 0;
 }
 
 #search button img
