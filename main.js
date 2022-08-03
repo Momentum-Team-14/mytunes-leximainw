@@ -288,68 +288,141 @@ function sendSearch(url, callback)
 
 HTMLElement.prototype.appendNew = function(src)
 {
-    let elem
-    let index = choice(src.indexOf(' '), src.length)
-    let data = src.substring(0, index)
-    let props = src.substring(index + 1)
-    let classIndex = data.indexOf('.')
-    let idIndex = data.indexOf('#')
-    let hasId = false
-    console.log(src)
-    if (classIndex !== -1 || idIndex !== -1)
+    if (typeof(src) === 'array')
     {
-        index = min(classIndex, idIndex)
-        elem = document.createElement(data.substring(0, index))
-        data = data.substring(index)
-        while (classIndex !== -1 || idIndex !== -1)
+        for (let subsrc of src)
         {
-            const isId = data[0] === '#'
-            if (isId)
+            if (typeof(subsrc) === 'array')
             {
-                if (hasId)
+                const elem = this.appendNew(subsrc[0])
+                if (subsrc[1])
                 {
-                    console.error(`adding multiple IDs to new element (from ${src})`)
+                    subsrc[1](elem)
                 }
-                hasId = true
-            }
-            classIndex = data.indexOf('.', 1)
-            idIndex = data.indexOf('#', 1)
-
-            index = choice(min(classIndex, idIndex), data.length)
-            const curr = data.substring(1, index)
-            data = data.substring(index)
-            if (curr === '')
-            {
-                console.error(`can't add empty ${isId ? 'id' : 'class'} (from ${src})`)
-                continue
-            }
-            if (isId)
-            {
-                elem.setAttribute('id', curr)
             }
             else
             {
-                elem.classList.add(curr)
+                this.appendNew(src)
             }
         }
     }
     else
     {
-        elem = document.createElement(data)
-    }
+        let elem
+        let index = choice(src.indexOf(' '), src.length)
+        let data = src.substring(0, index)
+        let props = src.substring(index + 1)
+        let classIndex = data.indexOf('.')
+        let idIndex = data.indexOf('#')
+        let hasId = false
+        if (classIndex !== -1 || idIndex !== -1)
+        {
+            index = min(classIndex, idIndex)
+            elem = document.createElement(data.substring(0, index))
+            data = data.substring(index)
+            while (classIndex !== -1 || idIndex !== -1)
+            {
+                const isId = data[0] === '#'
+                if (isId)
+                {
+                    if (hasId)
+                    {
+                        console.error(`adding multiple IDs to new element (from ${src})`)
+                    }
+                    hasId = true
+                }
+                classIndex = data.indexOf('.', 1)
+                idIndex = data.indexOf('#', 1)
 
-    // TODO: interpret properties
+                index = choice(min(classIndex, idIndex), data.length)
+                const curr = data.substring(1, index)
+                data = data.substring(index)
+                if (curr === '')
+                {
+                    console.error(`can't add empty ${isId ? 'id' : 'class'} (from ${src})`)
+                    continue
+                }
+                if (isId)
+                {
+                    elem.setAttribute('id', curr)
+                }
+                else
+                {
+                    elem.classList.add(curr)
+                }
+            }
+        }
+        else
+        {
+            elem = document.createElement(data)
+        }
 
-    this.appendChild(elem)
-    return elem
+        while (props !== '')
+        {
+            index = 0
+            let inString = false
+            let escaped = false
+            const chars = [...props]
+            while (index < chars.length)
+            {
+                if (inString)
+                {
+                    if (escaped)
+                    { escaped = false }
+                    else if (chars[index] == '\\')
+                    { escaped = true }
+                    else if (chars[index] == '"')
+                    { inString = false }
+                }
+                else if (chars[index] == '"')
+                { inString = true }
+                else if (chars[index] == ' ')
+                { break }
+                index++
+            }
+            const prop = props.substring(0, index)
+            props = props.substring(index + 1)
+            index = choice(prop.indexOf('='), prop.length)
+            const key = prop.substring(0, index)
+            const value = prop.substring(index + 1)
+            let parsedValue = ""
+            const valueChars = [...value]
+            inString = false
+            escaped = false
+            for (let i = 0; i < valueChars.length; i++)
+            {
+                if (inString)
+                {
+                    if (escaped)
+                    { parsedValue += valueChars[i] }
+                    else if (valueChars[i] == '\\')
+                    { escaped = true }
+                    else if (valueChars[i] == '"')
+                    { inString = false }
+                    else
+                    { parsedValue += valueChars[i] }
+                }
+                else if (valueChars[i] == '"')
+                { inString = true }
+                else if (valueChars[i] == ' ')
+                { break }
+                else
+                { parsedValue += valueChars[i] }
+            }
+            elem.setAttribute(key, parsedValue)
+        }
 
-    function choice(index, value)
-    {
-        return index !== -1 ? index : value
-    }
+        this.appendChild(elem)
+        return elem
 
-    function min(left, right)
-    {
-        return left === -1 ? right : right === -1 ? left : left < right ? left : right
+        function choice(index, value)
+        {
+            return index !== -1 ? index : value
+        }
+
+        function min(left, right)
+        {
+            return left === -1 ? right : right === -1 ? left : left < right ? left : right
+        }
     }
 }
