@@ -197,7 +197,7 @@ function progressUpdate(bar, playing)
     }
     if (playing)
     {
-        if (isNaN(elem.duration))
+        if (isNaN(elemAudio.duration))
         {
             bar.style.width = "0%"
         }
