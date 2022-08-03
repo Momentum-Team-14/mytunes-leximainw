@@ -20,6 +20,14 @@ document.querySelector('#search').addEventListener('submit', e => {
     document.body.focus()
 })
 
+document.querySelector('#audio-preview').addEventListener('ended', e => {
+    const card = document.querySelector('.result.selected')
+    if (card)
+    {
+        card.classList.add('paused')
+    }
+})
+
 function displayResults(search)
 {
     const resultsElem = document.querySelector('#results')
