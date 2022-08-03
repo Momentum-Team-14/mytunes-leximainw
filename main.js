@@ -197,6 +197,10 @@ function progressUpdate(bar, playing)
     }
     if (playing)
     {
+        if (isNaN(elem.duration))
+        {
+            bar.style.width = "0%"
+        }
         playingLoop = setInterval(() => progressLoop(bar), 10)
     }
     else
