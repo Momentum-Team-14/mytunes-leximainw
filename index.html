@@ -34,23 +34,27 @@
   <main>
     <div class="spacer">
       <div id="search-header-flex" class="flex between">
-        <form id="user-style-form">
-          <label for="user-style">Style:</label>
-          <select name="style" id="user-style">
-            <option value="dark-theme">Dark Mode</option>
-            <option value="light-theme">Light Mode</option>
-          </select>
-        </form>
-        <form id="search" action="/search">
-          <button><img src="magnifying-glass.svg" alt=""></button>
-          <select>
-            <option value="">All Results</option>
-            <option value="songTerm">Title</option>
-            <option value="albumTerm">Album</option>
-            <option value="artistTerm">Artist</option>
-          </select>
-          <input type="text">
-        </form>
+        <div class="search-inner-flex">
+          <form id="user-style-form">
+            <label for="user-style">Style:</label>
+            <select name="style" id="user-style">
+              <option value="dark-theme">Dark Mode</option>
+              <option value="light-theme">Light Mode</option>
+            </select>
+          </form>
+        </div>
+        <div class="search-inner-flex">
+          <form id="search" action="/search">
+            <button><img src="magnifying-glass.svg" alt=""></button>
+            <input type="text">
+            <select>
+              <option value="">All Results</option>
+              <option value="songTerm">Title</option>
+              <option value="albumTerm">Album</option>
+              <option value="artistTerm">Artist</option>
+            </select>
+          </form>
+        </div>
       </div>
       <audio id="audio-preview" controls></audio>
       <div id="results">

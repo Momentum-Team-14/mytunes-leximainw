@@ -143,6 +143,47 @@ audio
 
 @media(max-width: calc(36rem / 0.9))
 {
+    #search-header-flex
+    {
+        display: block;
+        width: 100%;
+    }
+
+    .search-inner-flex
+    {
+        display: flex;
+        justify-content: right;
+    }
+
+    #search-header-flex form
+    {
+        margin-bottom: 0.5rem;
+    }
+
+    #search-header-flex form:last-child
+    {
+        margin-bottom: 0rem
+    }
+
+    #search-header-flex
+    {
+        display: block;
+        width: 100;
+    }
+
+    #search-header-flex form
+    {
+        display: block;
+        margin-bottom: 0.5rem;
+        margin-left: auto;
+        margin-right: 0;
+    }
+
+    #search-header-flex form:last-child
+    {
+        margin-bottom: 0rem
+    }
+
     .result-outer
     {
         width: calc(50% - 1rem);
@@ -151,44 +192,6 @@ audio
 
 @media(max-width: calc(24rem / 0.9))
 {
-    #search-header-flex
-    {
-        display: block;
-        width: 100;
-    }
-
-    #search-header-flex form
-    {
-        width: min-content;
-        margin-bottom: 0.5rem;
-        margin-left: auto;
-        margin-right: 0;
-    }
-
-    #search-header-flex form:last-child
-    {
-        margin-bottom: 0rem
-    }
-
-    #search-header-flex
-    {
-        display: block;
-        width: 100;
-    }
-
-    #search-header-flex form
-    {
-        display: block;
-        margin-bottom: 0.5rem;
-        margin-left: auto;
-        margin-right: 0;
-    }
-
-    #search-header-flex form:last-child
-    {
-        margin-bottom: 0rem
-    }
-
     .result-outer
     {
         width: 100%;
