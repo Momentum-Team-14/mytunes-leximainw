@@ -10,6 +10,25 @@ const elemAudio = document.querySelector('#audio-preview')
 const elemCards = document.querySelector('#results')
 const elemSearch = document.querySelector('#search')
 let playingLoop
+let progressBar
+
+elemAudio.addEventListener('play', e => {
+    const curr = document.querySelector('.result.selected')
+    if (curr)
+    {
+        curr.classList.remove('paused')
+    }
+    progressUpdate(true)
+})
+
+elemAudio.addEventListener('pause', e => {
+    const curr = document.querySelector('.result.selected')
+    if (curr)
+    {
+        curr.classList.add('paused')
+    }
+    progressUpdate(false)
+})
 
 elemSearch.addEventListener('submit', e => {
     e.preventDefault()
@@ -174,7 +193,8 @@ function playCard(card)
                 curr.classList.add('paused')
                 elemAudio.pause()
             }
-            progressUpdate(card.querySelector('.play-bar>.bar>.progress'), paused)
+            progressBar = card.querySelector('.play-bar>.bar>.progress')
+            progressUpdate(paused)
             return
         }
         else
@@ -185,13 +205,14 @@ function playCard(card)
     }
     elemAudio.src = card.songUrl
     card.classList.add('selected')
-    progressUpdate(card.querySelector('.play-bar>.bar>.progress'), true)
+    progressBar = card.querySelector('.play-bar>.bar>.progress')
+    progressUpdate(true)
     elemAudio.play()
 }
 
-function progressUpdate(bar, playing)
+function progressUpdate(playing)
 {
-    if (!bar)
+    if (!progressBar)
     {
         return
     }
@@ -199,13 +220,13 @@ function progressUpdate(bar, playing)
     {
         if (isNaN(elemAudio.duration))
         {
-            bar.style.width = "0%"
+            progressBar.style.width = "0%"
         }
-        playingLoop = setInterval(() => progressLoop(bar), 10)
+        playingLoop = setInterval(() => progressLoop(progressBar), 10)
     }
     else
     {
-        progressLoop(bar)
+        progressLoop(progressBar)
     }
 }
 
