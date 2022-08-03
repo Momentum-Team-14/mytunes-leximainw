@@ -11,7 +11,7 @@ header
 {
     background-color: #083d77;
     border-bottom: 3px solid var(--color-header-blue);
-    padding: 2em 0;
+    padding: 2rem 0;
 }
 
 header h1
@@ -80,6 +80,7 @@ main
 {
     background-color: var(--color1);
     padding: 1rem 0;
+    min-height: calc(100vh - (10rem + 3px));
 }
 
 main h1
