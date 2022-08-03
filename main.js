@@ -55,13 +55,11 @@ function displayResults(search)
     elemCards.innerHTML = ''
     let results = search.response.results
         .filter(x => x.wrapperType === 'track' && x.kind === 'song')
-    if (currCard)
+    if (currCard && !currCard.classList.contains('paused'))
     {
-        console.log(currCard)
         elemCards.appendChild(currCard.parentElement)
         if (results.some(x => x.trackId === currCard.trackId))
         {
-            results = results.filter(x => x.trackId !== currCard.trackId)
             elemCards.removeCard = null
         }
         else
@@ -83,6 +81,11 @@ function displayResults(search)
     else
     {
         results.slice(0, 50).forEach(result => {
+            if (currCard && currCard.trackId === result.trackId)
+            {
+                elemCards.appendChild(currCard.parentElement)
+                return
+            }
             const outer = document.createElement('div')
             outer.classList.add('result-outer')
             const elem = document.createElement('div')
