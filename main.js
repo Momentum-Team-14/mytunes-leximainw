@@ -38,7 +38,7 @@ elemSearch.addEventListener('submit', e => {
         return
     }
     const type = document.querySelector('#search select').value
-    let url = `${apiUrl}search?term=${encodeURIComponent(term)}&media=music&entity=song&attribute=songTerm`
+    let url = `${apiUrl}search?term=${encodeURIComponent(term)}&media=music&entity=song`
     if (type.length)
     {
         url += `&attribute=${type}`
