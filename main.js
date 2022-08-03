@@ -49,7 +49,6 @@ function displayResults(search)
             elemCards.prepend(errBanner)
         }
         errBanner.innerText = "Couldn't get search results - try again later!"
-        // TODO: inform user that search failed
         return
     }
     elemCards.innerHTML = ''
@@ -57,7 +56,7 @@ function displayResults(search)
         .filter(x => x.wrapperType === 'track' && x.kind === 'song')
     if (currCard && !currCard.classList.contains('paused'))
     {
-        elemCards.appendChild(currCard.parentElement)
+        elemCards.append(currCard.parentElement)
         if (results.some(x => x.trackId === currCard.trackId))
         {
             elemCards.removeCard = null
@@ -83,30 +82,42 @@ function displayResults(search)
         results.slice(0, 50).forEach(result => {
             if (currCard && currCard.trackId === result.trackId)
             {
-                elemCards.appendChild(currCard.parentElement)
+                elemCards.append(currCard.parentElement)
                 return
             }
+            const releaseDate = new Date(result.releaseDate)
             const outer = document.createElement('div')
             outer.classList.add('result-outer')
             const elem = document.createElement('div')
             elem.classList.add('result')
             let child = document.createElement('img')
             child.src = result.artworkUrl100
-            elem.appendChild(child)
+            elem.append(child)
             child = document.createElement('div')
-            child.innerText = result.trackName
-            elem.appendChild(child)
-            child = document.createElement('div')
-            child.appendChild(document.createTextNode('by '))
             let span = document.createElement('span')
+            span.innerText = result.trackName
+            child.append(span)
+            child.append(' ')
+            span = document.createElement('span')
+            span.innerText = `(${releaseDate.getUTCFullYear()})`
+            span.classList.add('text-sm')
+            child.append(span)
+            elem.append(child)
+            child = document.createElement('div')
+            span = document.createElement('span')
+            span.innerText = 'by'
+            span.classList.add('text-sm')
+            child.append(span)
+            child.append(' ')
+            span = document.createElement('span')
             span.innerText = result.artistName
-            child.appendChild(span)
-            elem.appendChild(child)
+            child.append(span)
+            elem.append(child)
             elem.songUrl = result.previewUrl
             elem.trackId = result.trackId
             elem.addEventListener('click', () => playCard(elem))
-            outer.appendChild(elem)
-            elemCards.appendChild(outer)
+            outer.append(elem)
+            elemCards.append(outer)
         })
     }
 }
