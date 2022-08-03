@@ -151,6 +151,8 @@ function displayResults(search)
                                 ['span', x => x.innerText = result.artistName]
                             ])]
                         ])
+
+                        // card data & click handler
                         card.songUrl = result.previewUrl
                         card.trackId = result.trackId
                         card.addEventListener('click', () => playCard(card))
@@ -298,6 +300,13 @@ function sendSearch(url, callback)
     })
 }
 
+/// appendNew(src) - appends a new element to the given HTML element.
+/// src may be a string or a mixed array of strings or arrays with a string and callback.
+/// string format: "type#id.class1.class2 attr1=value attr2=value boolAttr"
+/// or "$text" to append text instead of a new HTML element
+/// returns the newly created element (or null for $text).
+/// array format: ["stringFormat", ["stringFormat", x => x.doSomething()]]
+/// returns null.
 HTMLElement.prototype.appendNew = function(src)
 {
     if (typeof(src) === 'object')
@@ -317,6 +326,7 @@ HTMLElement.prototype.appendNew = function(src)
                 this.appendNew(subsrc)
             }
         }
+        return null
     }
     else
     {
