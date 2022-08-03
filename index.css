@@ -7,7 +7,7 @@
 #search button
 {
     all: unset;
-    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 #search button img
@@ -140,6 +140,44 @@ audio
 
 @media(max-width: calc(24rem / 0.9))
 {
+    #search-header-flex
+    {
+        display: block;
+        width: 100;
+    }
+
+    #search-header-flex form
+    {
+        width: min-content;
+        margin-bottom: 0.5rem;
+        margin-left: auto;
+        margin-right: 0;
+    }
+
+    #search-header-flex form:last-child
+    {
+        margin-bottom: 0rem
+    }
+
+    #search-header-flex
+    {
+        display: block;
+        width: 100;
+    }
+
+    #search-header-flex form
+    {
+        display: block;
+        margin-bottom: 0.5rem;
+        margin-left: auto;
+        margin-right: 0;
+    }
+
+    #search-header-flex form:last-child
+    {
+        margin-bottom: 0rem
+    }
+
     .result-outer
     {
         width: 100%;

@@ -33,7 +33,7 @@
   </div>
   <main>
     <div class="spacer">
-      <div class="flex between">
+      <div id="search-header-flex" class="flex between">
         <form id="user-style-form">
           <label for="user-style">Style:</label>
           <select name="style" id="user-style">
@@ -42,8 +42,8 @@
           </select>
         </form>
         <form id="search" action="/search">
-          <input type="text">
           <button><img src="magnifying-glass.svg" alt=""></button>
+          <input type="text">
         </form>
       </div>
       <audio id="audio-preview" controls></audio>
