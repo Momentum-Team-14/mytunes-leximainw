@@ -63,7 +63,40 @@ audio
     border-radius: 1rem;
 }
 
-.result div
+.result:not(.selected) .play-bar
+{
+    display: none;
+}
+
+.result .play-bar
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.result .play-bar>.bar
+{
+    background-color: var(--color-play-bar);
+    width: 80%;
+    height: 0.25rem;
+    border-radius: 999rem;
+    transition-duration: 0.2s;
+    overflow: hidden;
+}
+
+.result .play-bar>.bar:hover
+{
+    height: 0.75rem;
+}
+
+.result .play-bar>.bar>.progress
+{
+    background-color: var(--color4);
+    height: 100%;
+}
+
+.result div:not(.play-bar)
 {
     margin-bottom: 0.35rem;
 }

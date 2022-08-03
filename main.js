@@ -9,6 +9,7 @@ const searchFoundTimeout = 15 * 60 * 1000
 const elemAudio = document.querySelector('#audio-preview')
 const elemCards = document.querySelector('#results')
 const elemSearch = document.querySelector('#search')
+let playingLoop
 
 elemSearch.addEventListener('submit', e => {
     e.preventDefault()
@@ -79,7 +80,6 @@ function displayResults(search)
     }
     else
     {
-        console.log(results[0])
         results.slice(0, 50).forEach(result => {
             if (currCard && currCard.trackId === result.trackId)
             {
@@ -92,12 +92,25 @@ function displayResults(search)
             outer.classList.add('result-outer')
             const elem = document.createElement('div')
             elem.classList.add('result')
+
             let child = document.createElement('img')
             child.src = result.artworkUrl100
             elem.append(child)
+
+            child = document.createElement('div')
+            child.classList.add('play-bar')
+            let innerDiv = document.createElement('div')
+            innerDiv.classList.add('bar')
+            let progress = document.createElement('div')
+            progress.classList.add('progress')
+            innerDiv.append(progress)
+            child.append(innerDiv)
+            elem.append(child)
+
             child = document.createElement('div')
             child.innerText = result.trackName
             elem.append(child)
+
             child = document.createElement('div')
             let span = document.createElement('span')
             span.innerText = result.collectionName
@@ -108,6 +121,7 @@ function displayResults(search)
             span.classList.add('text-sm')
             child.append(span)
             elem.append(child)
+
             child = document.createElement('div')
             span = document.createElement('span')
             span.innerText = 'by'
@@ -118,6 +132,7 @@ function displayResults(search)
             span.innerText = result.artistName
             child.append(span)
             elem.append(child)
+
             elem.songUrl = result.previewUrl
             elem.trackId = result.trackId
             elem.addEventListener('click', () => playCard(elem))
@@ -129,6 +144,7 @@ function displayResults(search)
 
 function playCard(card)
 {
+    clearInterval(playingLoop)
     if (elemCards.removeCard && card != elemCards.removeCard)
     {
         // remove linger card when new card plays
@@ -137,7 +153,6 @@ function playCard(card)
 
         // reflow card after new card so new card doesn't jump
         const indexOf = Array.from(elemCards.children).indexOf(card.parentElement)
-        console.log(indexOf)
         if (indexOf !== -1 && indexOf + 1 < elemCards.children.length)
         {
             elemCards.insertBefore(elemCards.children[indexOf + 1], card.parentElement)
@@ -159,6 +174,7 @@ function playCard(card)
                 curr.classList.add('paused')
                 elemAudio.pause()
             }
+            progressUpdate(card.querySelector('.play-bar>.bar>.progress'), paused)
             return
         }
         else
@@ -169,7 +185,29 @@ function playCard(card)
     }
     elemAudio.src = card.songUrl
     card.classList.add('selected')
+    progressUpdate(card.querySelector('.play-bar>.bar>.progress'), true)
     elemAudio.play()
+}
+
+function progressUpdate(bar, playing)
+{
+    if (!bar)
+    {
+        return
+    }
+    if (playing)
+    {
+        playingLoop = setInterval(() => progressLoop(bar), 10)
+    }
+    else
+    {
+        progressLoop(bar)
+    }
+}
+
+function progressLoop(bar)
+{
+    bar.style.width = `${elemAudio.currentTime / elemAudio.duration * 100}%`
 }
 
 function sendSearch(url, callback)
