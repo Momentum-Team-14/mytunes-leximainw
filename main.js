@@ -30,6 +30,14 @@ elemAudio.addEventListener('pause', e => {
     progressUpdate(false)
 })
 
+elemAudio.addEventListener('ended', e => {
+    const card = document.querySelector('.result.selected')
+    if (card)
+    {
+        card.classList.add('paused')
+    }
+})
+
 elemSearch.addEventListener('submit', e => {
     e.preventDefault()
     const term = document.querySelector('#search input').value
@@ -50,14 +58,6 @@ elemSearch.addEventListener('submit', e => {
     }
     document.activeElement.blur()
     document.body.focus()
-})
-
-elemAudio.addEventListener('ended', e => {
-    const card = document.querySelector('.result.selected')
-    if (card)
-    {
-        card.classList.add('paused')
-    }
 })
 
 function displayResults(search)
