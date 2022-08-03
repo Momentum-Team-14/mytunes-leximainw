@@ -164,7 +164,7 @@ function displayResults(search)
 function playCard(card)
 {
     clearInterval(playingLoop)
-    if (elemCards.removeCard && card != elemCards.removeCard)
+    if (elemCards.removeCard && card.parentElement !== elemCards.removeCard)
     {
         // remove linger card when new card plays
         elemCards.removeChild(elemCards.removeCard)
