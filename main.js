@@ -126,8 +126,17 @@ function playCard(card)
 {
     if (elemCards.removeCard && card != elemCards.removeCard)
     {
+        // remove linger card when new card plays
         elemCards.removeChild(elemCards.removeCard)
         elemCards.removeCard = null
+
+        // reflow card after new card so new card doesn't jump
+        const indexOf = Array.from(elemCards.children).indexOf(card.parentElement)
+        console.log(indexOf)
+        if (indexOf !== -1 && indexOf + 1 < elemCards.children.length)
+        {
+            elemCards.insertBefore(elemCards.children[indexOf + 1], card.parentElement)
+        }
     }
     const curr = document.querySelector('.result.selected')
     if (curr)
