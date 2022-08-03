@@ -53,6 +53,11 @@ audio
     filter: drop-shadow(0 0.5rem 4px #00000080);
 }
 
+.result.selected.paused
+{
+    background-color: var(--color2);
+}
+
 .result img
 {
     border-radius: 1rem;

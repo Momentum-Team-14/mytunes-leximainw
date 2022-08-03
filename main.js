@@ -8,13 +8,16 @@ const searchFoundTimeout = 15 * 60 * 1000
 
 document.querySelector('#search').addEventListener('submit', e => {
     e.preventDefault()
-    const term = document.querySelector('#search input').value
+    const input = document.querySelector('#search input')
+    const term = input.value
     if (term === '')
     {
         return
     }
     const url = `${apiUrl}search?term=${encodeURIComponent(term)}&media=music`
     sendSearch(url, displayResults).term = term
+    document.activeElement.blur()
+    document.body.focus()
 })
 
 function displayResults(search)
@@ -67,25 +70,43 @@ function displayResults(search)
             span.innerText = result.artistName
             child.appendChild(span)
             elem.appendChild(child)
-            elem.addEventListener('click', e => {
-                const curr = document.querySelector('.result.selected')
-                if (curr)
-                {
-                    curr.classList.remove('selected')
-                }
-                elem.classList.add('selected')
-                playSong(result)
-            })
+            elem.songUrl = result.previewUrl
+            elem.addEventListener('click', () => playCard(elem))
             outer.appendChild(elem)
             resultsElem.appendChild(outer)
         })
     }
 }
 
-function playSong(result)
+function playCard(card)
 {
-    const audio = document.querySelector('#audio-preview')
-    audio.src = result.previewUrl
+    const curr = document.querySelector('.result.selected')
+    const audio = document.querySelector("#audio-preview")
+    if (curr)
+    {
+        if (curr === card)
+        {
+            const paused = curr.classList.contains('paused')
+            if (paused)
+            {
+                curr.classList.remove('paused')
+                audio.play()
+            }
+            else
+            {
+                curr.classList.add('paused')
+                audio.pause()
+            }
+            return
+        }
+        else
+        {
+            curr.classList.remove('selected')
+            curr.classList.remove('paused')
+        }
+    }
+    audio.src = card.songUrl
+    card.classList.add('selected')
     audio.play()
 }
 
